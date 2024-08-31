@@ -3,19 +3,20 @@ provider "aws" {
 }
 
 # IAM Role for Lambda Execution
-#resource "aws_iam_role" "lambda_exec_role" {
-#  name = "lambda_exec_role"
-#  assume_role_policy = jsonencode({
-#    Version = "2012-10-17",
-#    Statement = [{
-#      Action = "sts:AssumeRole",
-#      Effect = "Allow",
-#      Principal = {
-#        Service = "lambda.amazonaws.com"
-#      }
-#    }]
-#  })
-#}
+resource "aws_iam_role" "lambda_exec_role" {
+  name = "lambda_exec_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Effect = "Allow",
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+    }]
+  })
+}
 
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = aws_iam_role.lambda_exec_role.name
@@ -23,7 +24,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 }
 
 # Lambda Function
-resource "aws_lambda_function" "datos_dynamo" {
+resource "aws_lambda_function" "datos-dynamo" {
   function_name = "datos-dynamo"
   runtime       = "nodejs20.x"
   handler       = "app.handler"  # Nombre del archivo y exportación del manejador
@@ -33,11 +34,17 @@ resource "aws_lambda_function" "datos_dynamo" {
   source_code_hash = filebase64sha256("datos-dynamo.zip")
 }
 
+# API Gateway HTTP API
+resource "aws_apigatewayv2_api" "api" {
+  name          = "my-api"
+  protocol_type  = "HTTP"
+}
+
 # API Gateway HTTP Integration
 resource "aws_apigatewayv2_integration" "lambda_integration" {
   api_id          = aws_apigatewayv2_api.api.id
   integration_type = "AWS_PROXY"
-  integration_uri  = "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/${aws_lambda_function.datos_dynamo.arn}/invocations"
+  integration_uri  = "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/${aws_lambda_function.datos-dynamo.arn}/invocations"
   payload_format_version = "2.0"
 }
 
@@ -48,10 +55,17 @@ resource "aws_apigatewayv2_route" "route" {
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
 
+# API Gateway HTTP Stage
+resource "aws_apigatewayv2_stage" "stage" {
+  api_id     = aws_apigatewayv2_api.api.id
+  name       = "$default"
+  auto_deploy = true
+}
+
 # Lambda Permission for API Gateway
 resource "aws_lambda_permission" "allow_apigateway" {
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.datos_dynamo.function_name
+  function_name = aws_lambda_function.datos-dynamo.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
 }
