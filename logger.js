@@ -1,6 +1,5 @@
 const { LoggerProvider, SimpleLogProcessor } = require('@opentelemetry/sdk-logs');
 const { OTLPLogExporter } = require('@opentelemetry/exporter-logs-otlp-http');
-const { LogLevel, LoggerProvider, SimpleLogProcessor } = require('@opentelemetry/sdk-logs');
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, printf } = format;
 
@@ -21,7 +20,7 @@ const headers = {
 
 
   const loggerProvider = new LoggerProvider({
-    level: LogLevel.INFO,
+    level: "TRACE",
     resource: {
       serviceName: 'datos-dynamo'
     }
@@ -33,7 +32,7 @@ const headers = {
   module.exports = loggerProvider.getLogger('default');
 
 const logger = createLogger({
-    level: 'info',
+    level: 'TRACE',
     format: combine(
         timestamp(),
         logFormat
