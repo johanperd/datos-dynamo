@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 # IAM Role for Lambda Execution
-resource "aws_iam_role" "lambda_exec_role" {
-  name = "lambda_exec_role"
+resource "aws_iam_role" "lambda_exec_role_2" {
+  name = "lambda_exec_role_2"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -19,7 +19,7 @@ resource "aws_iam_role" "lambda_exec_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
-  role       = aws_iam_role.lambda_exec_role.name
+  role       = aws_iam_role.lambda_exec_role_2.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
@@ -28,7 +28,7 @@ resource "aws_lambda_function" "datos-dynamo" {
   function_name = "datos-dynamo"
   runtime       = "nodejs20.x"
   handler       = "app.handler"  # Nombre del archivo y exportación del manejador
-  role          = aws_iam_role.lambda_exec_role.arn
+  role          = aws_iam_role.lambda_exec_role_2.arn
   filename      = "datos-dynamo.zip"
 
   source_code_hash = filebase64sha256("datos-dynamo.zip")
