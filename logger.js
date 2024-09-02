@@ -1,5 +1,6 @@
-const { LogLevel, LoggerProvider, SimpleLogProcessor } = require('@opentelemetry/sdk-logs');
+const { LoggerProvider, SimpleLogProcessor } = require('@opentelemetry/sdk-logs');
 const { OTLPLogExporter } = require('@opentelemetry/exporter-logs-otlp-http');
+const { LogLevel, LoggerProvider, SimpleLogProcessor } = require('@opentelemetry/sdk-logs');
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, printf } = format;
 
