@@ -20,9 +20,8 @@ resource "aws_iam_role" "lambda_exec_role_2" {
 
 
 resource "aws_iam_policy" "dynamodb_scan_policy" {
-  name        = "DynamoDBScanPolicy"
+  name        = "dynamodb_scan_policy"
   description = "Permite realizar la acción dynamodb:Scan en la tabla datos"
-  
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
