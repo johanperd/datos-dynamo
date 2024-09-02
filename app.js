@@ -7,6 +7,7 @@ const app = express();
 
 // Configura DynamoDB
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+
 const TABLE_NAME = 'datos';
 
 app.get('/datos-dynamo', async (req, res) => {
@@ -20,7 +21,7 @@ app.get('/datos-dynamo', async (req, res) => {
         res.json(data.Items);
     } catch (error) {
         logger.error('Error al acceder a DynamoDB', error); // Log de error
-        res.status(500).json({ error: 'No se pudieron obtener los datos de DynamoDB' });
+        res.status(500).json({ error: 'No se pudieron obtener los datos de DynamoDB' + error});
     }
 });
 
