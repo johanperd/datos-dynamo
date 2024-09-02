@@ -5,7 +5,7 @@ const { OTLPLogExporter } = require('@opentelemetry/exporter-logs-otlp-http');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 const { PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics');
-const { LoggerProvider } = require('@opentelemetry/sdk-logs');
+const { LoggerProvider, SimpleLogRecordProcessor } = require('@opentelemetry/sdk-logs');
 const logger = require('./logger'); 
 
 const headers = {
