@@ -24,7 +24,7 @@ const loggerProvider = new LoggerProvider({
     }
 });
 
-loggerProvider.addLogProcessor(new SimpleLogRecordProcessor(logExporter));
+loggerProvider.addLogRecordProcessor(new SimpleLogRecordProcessor(logExporter));
 loggerProvider.register();
 
 module.exports = loggerProvider.getLogger('default');
