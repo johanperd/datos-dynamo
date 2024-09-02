@@ -15,7 +15,6 @@ app.get('/datos-dynamo', async (req, res) => {
         const params = {
             TableName: TABLE_NAME
         };
-
         const data = await dynamoDb.scan(params).promise();
         logger.info('Ruta /datos-dynamo accedida, retornando datos de DynamoDB', data.Items); // Log de información
         res.json(data.Items);

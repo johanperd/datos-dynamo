@@ -18,6 +18,28 @@ resource "aws_iam_role" "lambda_exec_role_2" {
   })
 }
 
+
+resource "aws_iam_policy" "dynamodb_scan_policy" {
+  name        = "DynamoDBScanPolicy"
+  description = "Permite realizar la acción dynamodb:Scan en la tabla datos"
+  
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "dynamodb:Scan",
+        Resource = "arn:aws:dynamodb:us-east-2:637423368026:table/datos"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_dynamodb_scan_policy" {
+  role       = aws_iam_role.lambda_exec_role_2.name
+  policy_arn = aws_iam_policy.dynamodb_scan_policy.arn
+}
+
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = aws_iam_role.lambda_exec_role_2.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
