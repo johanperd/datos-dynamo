@@ -7,6 +7,7 @@ const { PeriodicExportingMetricReader,ConsoleMetricExporter, } = require('@opent
 const { LoggerProvider, SimpleLogRecordProcessor } = require('@opentelemetry/sdk-logs');
 const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-node');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
+const { Resource } = require('@opentelemetry/resources');
 
 
 const logger = require('./logger'); 
