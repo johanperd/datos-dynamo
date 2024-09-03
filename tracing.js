@@ -2,10 +2,13 @@ const { NodeSDK } = require('@opentelemetry/sdk-node');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-http');
 const { OTLPLogExporter } = require('@opentelemetry/exporter-logs-otlp-http');
-const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
-const { PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics');
+const { PeriodicExportingMetricReader,ConsoleMetricExporter, } = require('@opentelemetry/sdk-metrics');
 const { LoggerProvider, SimpleLogRecordProcessor } = require('@opentelemetry/sdk-logs');
+const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-node');
+const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
+
+
 const logger = require('./logger'); 
 
 const headers = {
@@ -46,6 +49,9 @@ loggerProvider.addLogRecordProcessor(new SimpleLogRecordProcessor(logExporter));
 
 // Configura el SDK de Node con los exportadores y las instrumentaciones automáticas
 const sdk = new NodeSDK({
+  resource: new Resource({
+    [SemanticResourceAttributes.SERVICE_NAME]: 'datos-dynamo'
+  }),
     traceExporter,
     metricReader,
     loggerProvider,
