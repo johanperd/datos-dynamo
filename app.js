@@ -38,7 +38,6 @@ app.get('/datos-dynamo', async (req, res) => {
 
 
      logger.info('LLAMANDO AL SERVICIO CLIENTE');
-    const dataService = getData();
     try {       
         const params = {
             TableName: TABLE_NAME
