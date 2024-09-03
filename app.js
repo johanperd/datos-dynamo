@@ -4,7 +4,17 @@ const serverless = require('serverless-http');
 const logger = require('./logger');
 const AWS = require('aws-sdk');
 const app = express();
-const axios = require('axios');
+const fetch = require('node-fetch');
+
+const getData = async () => {
+    try {
+      const response = await fetch('https://vwb3xxy643.execute-api.us-east-2.amazonaws.com/data');
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+    }
+  };
 
 
 
@@ -16,7 +26,7 @@ const TABLE_NAME = 'datos';
 app.get('/datos-dynamo', async (req, res) => {
     
     try {
-        const dataService = await axios.get('https://vwb3xxy643.execute-api.us-east-2.amazonaws.com/data');
+        const dataService = getData();
         const params = {
             TableName: TABLE_NAME
         };
