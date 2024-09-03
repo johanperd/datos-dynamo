@@ -26,7 +26,7 @@ const TABLE_NAME = 'datos';
 
 app.get('/datos-dynamo', async (req, res) => {
 
-  const headers = req.headers();
+  const headers = req.headers;
   
   const getData = fetch('https://6frj5r2n4l.execute-api.us-east-2.amazonaws.com/data', {
     method: 'GET',
