@@ -9,7 +9,7 @@ const fetch = require('node-fetch');
 async function getData(headers) {
   logger.info('LLAMANDO AL SERVICIO CLIENTE');
   try {
-    const response = await fetch("https://o5lqqv9t3f.execute-api.us-east-2.amazonaws.com/data", {
+    const response = await fetch("https://gdq52l706i.execute-api.us-east-2.amazonaws.com/data", {
       method: method,
       headers: headers
     });
@@ -30,6 +30,7 @@ const TABLE_NAME = 'datos';
 app.get('/datos-dynamo', async (req, res) => {
 
   const headers = getData(req.headers);
+  logger.info('headers '+ req.headers);
   
     try {       
         const params = {
