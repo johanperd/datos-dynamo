@@ -6,16 +6,19 @@ const AWS = require('aws-sdk');
 const app = express();
 const fetch = require('node-fetch');
 
-const getData = async () => {
-    try {
-      const response = await fetch('https://6frj5r2n4l.execute-api.us-east-2.amazonaws.com/data');
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Error al obtener los datos:', error);
-    }
-  };
-
+async function getData(headers) {
+  logger.info('LLAMANDO AL SERVICIO CLIENTE');
+  try {
+    const response = await fetch(url, {
+      method: method,
+      headers: headers
+    });
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    logger.error('Error:', error);
+  }
+}
 
 
 // Configura DynamoDB
@@ -26,18 +29,8 @@ const TABLE_NAME = 'datos';
 
 app.get('/datos-dynamo', async (req, res) => {
 
-  const headers = req.headers;
+  const headers = getData(req.headers);
   
-  const getData = fetch('https://6frj5r2n4l.execute-api.us-east-2.amazonaws.com/data', {
-    method: 'GET',
-    headers: headers
-  })
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));
-
-
-     logger.info('LLAMANDO AL SERVICIO CLIENTE');
     try {       
         const params = {
             TableName: TABLE_NAME
@@ -45,7 +38,9 @@ app.get('/datos-dynamo', async (req, res) => {
         const datax = await dynamoDb.scan(params).promise();
         logger.info('Ruta /datos-dynamo accedida, retornando datos de DynamoDB', datax.Items); // Log de información
         res.json(datax.Items);
-    } catch (error) {
+    
+    
+      } catch (error) {
         logger.error('Error al acceder a DynamoDB', error); // Log de error
         res.status(500).json({ error: 'No se pudieron obtener los datos de DynamoDB' + error});
     }
