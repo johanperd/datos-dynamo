@@ -21,9 +21,22 @@ const getData = async () => {
 // Configura DynamoDB
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
+
 const TABLE_NAME = 'datos';
 
 app.get('/datos-dynamo', async (req, res) => {
+
+  const headers = req.headers();
+  
+  const getData = fetch('https://6frj5r2n4l.execute-api.us-east-2.amazonaws.com/data', {
+    method: 'GET',
+    headers: headers
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+
+
      logger.info('LLAMANDO AL SERVICIO CLIENTE');
     const dataService = getData();
     try {       
