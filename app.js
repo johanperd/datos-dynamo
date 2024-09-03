@@ -24,16 +24,15 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = 'datos';
 
 app.get('/datos-dynamo', async (req, res) => {
-    
-    try {
-        const dataService = getData();
+     logger.info('LLAMANDO AL SERVICIO CLIENTE');
+    const dataService = getData();
+    try {       
         const params = {
             TableName: TABLE_NAME
         };
-        const data = await dynamoDb.scan(params).promise();
-        logger.info('Ruta /datos-dynamo accedida, retornando datos de DynamoDB', data.Items); // Log de información
-        res.json(
-            (data.Items), dataService);
+        const datax = await dynamoDb.scan(params).promise();
+        logger.info('Ruta /datos-dynamo accedida, retornando datos de DynamoDB', datax.Items); // Log de información
+        res.json(datax.Items);
     } catch (error) {
         logger.error('Error al acceder a DynamoDB', error); // Log de error
         res.status(500).json({ error: 'No se pudieron obtener los datos de DynamoDB' + error});
