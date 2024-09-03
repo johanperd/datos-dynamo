@@ -8,7 +8,7 @@ const fetch = require('node-fetch');
 
 const getData = async () => {
     try {
-      const response = await fetch('https://vwb3xxy643.execute-api.us-east-2.amazonaws.com/data');
+      const response = await fetch('https://6frj5r2n4l.execute-api.us-east-2.amazonaws.com/data');
       const data = await response.json();
       console.log(data);
     } catch (error) {
