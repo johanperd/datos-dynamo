@@ -9,7 +9,7 @@ const fetch = require('node-fetch');
 async function getData(headers) {
   logger.info('LLAMANDO AL SERVICIO CLIENTE');
   try {
-    const response = await fetch(url, {
+    const response = await fetch("https://o5lqqv9t3f.execute-api.us-east-2.amazonaws.com/data", {
       method: method,
       headers: headers
     });

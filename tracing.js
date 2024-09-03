@@ -17,23 +17,23 @@ diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.TRACE);
 
 // Configura el exportador de trazas
 const traceExporter = new OTLPTraceExporter({
-  url: 'https://otlp-gateway-prod-us-east-0.grafana.net/otlp/v1/traces', // Cambia la URL según tu backend de OTLP
+  url: 'https://otlp-gateway-prod-us-east-0.grafana.net/otlp/v1/traces', 
   headers: headers
 });
 
 // Configura el exportador de métricas
 const metricExporter = new OTLPMetricExporter({
-  url: 'https://otlp-gateway-prod-us-east-0.grafana.net/otlp/v1/metrics', // Cambia la URL según tu backend de OTLP
+  url: 'https://otlp-gateway-prod-us-east-0.grafana.net/otlp/v1/metrics', 
   headers: headers
 });
+
 
 // Configura el exportador de logs
 const logExporter = new OTLPLogExporter({
-  url: 'https://otlp-gateway-prod-us-east-0.grafana.net/otlp/v1/logs', // Cambia la URL según tu backend de OTLP
+  url: 'https://otlp-gateway-prod-us-east-0.grafana.net/otlp/v1/logs', 
   headers: headers
 });
 
-// Configura el SDK de Node con los exportadores y las instrumentaciones automáticas
 const sdk = new NodeSDK({
   resource: new Resource({
     [SemanticResourceAttributes.SERVICE_NAME]: 'datos-dynamo'
